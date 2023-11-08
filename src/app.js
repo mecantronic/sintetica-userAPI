@@ -18,12 +18,7 @@ const corsOptions = {
   credentials: true,
 };
 
-/* app.use(cors(corsOptions)); */
-
-// Configura CORS para permitir cualquier origen
-app.use(cors());
-app.options("*", cors());
-
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("dev"));
 
