@@ -1,4 +1,5 @@
 import { Model, DataTypes } from "sequelize";
+import bcryptjs from "bcryptjs";
 import sequelize from "../db.js";
 
 class User extends Model {}
@@ -18,6 +19,7 @@ User.init(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -48,10 +50,20 @@ User.init(
   }
 );
 
-export default User
+User.beforeCreate(async (user) => {
+  const salt = await bcryptjs.genSalt(10);
+  user.password = await bcryptjs.hash(user.password, salt);
+});
 
+User.prototype.isValidPassword = async function (password) {
+  const user = this;
+  const compare = await bcryptjs.compare(password, user.password);
+  return compare;
+};
 
-  /* userName: ,
+export default User;
+
+/* userName: ,
   email: ,
   password: ,
   firstName: ,

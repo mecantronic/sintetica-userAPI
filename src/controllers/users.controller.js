@@ -20,38 +20,12 @@ export const getUser = async (req, res) => {
       model: Credit,
     },
   });
-  console.log("usuario encontrado: ", user)
   res.status(200).json({
     ok: true,
     status: 200,
     user,
   });
 };
-
-export const createUser = async (req, res) => {
-  const { userName, email, password, firstName, lastName, phone } = req.body;
-  const createdUser = await User.create({
-    userName,
-    email,
-    password,
-    firstName,
-    lastName,
-    phone,
-  });
-
-  const addCredits = await Credit.create({})
-
-  await addCredits.setUser(createdUser)
-
-  res.status(201).json({
-    ok: true,
-    status: 201,
-    message: "User created",
-    createdUser,
-    addCredits
-  });
-};
-
 
 export const updateUser = async (req, res) => {
   const { userId } = req.params;
